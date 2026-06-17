@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ตรรกะศาสตร์ — ประพจน์และเกมงู-บันได</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;600;700&display=swap');
+
+:root {
+  --bg: #0d0d1a;
+  --panel: #14142b;
+  --border: #2a2a4a;
+  --accent: #7c3aed;
+  --accent2: #06b6d4;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --easy: #10b981;
+  --medium: #f59e0b;
+  --hard: #ef4444;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* NAV */
+nav {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+
+.logo {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent2);
+  letter-spacing: 1px;
+  padding: 16px 0;
+  white-space: nowrap;
+}
+.logo span { color: var(--accent); }
+
+.nav-tabs {
+  display: flex;
+  gap: 2px;
+  margin-left: 8px;
+}
+
+.nav-tab {
+  padding: 18px 16px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'Sarabun', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+
+/* SECTIONS */
+.section { display: none; }
+.section.active { display: block; }
+
+.content-wrap { max-width: 860px; margin: 0 auto; padding: 32px 20px 60px; }
+
+.page-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 6px;
+}
+
+.page-subtitle {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--accent2); margin: 28px 0 12px; }
+
+.tcard { background: var(--panel); border: 1px solid var(--border); border-radius: 14px; padding: 20px 24px; margin-bottom: 18px; }
+.tcard.hl { border-left: 3px solid var(--accent); }
+
+.def-box { background: rgba(124,58,237,0.1); border: 1px solid rgba(124,58,237,0.2); border-radius: 10px; padding: 14px 18px; margin: 12px 0; font-size: 0.92rem; }
+.def-label { font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent2); font-weight: 600; margin-bottom: 4px; }
+
+.ex-row { display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; font-size: 0.92rem; }
+.ex-num { background: var(--accent); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-family: 'Space Grotesk', sans-serif; flex-shrink: 0; margin-top: 3px; }
+
+.tag-t { display:inline-block;padding:1px 8px;border-radius:4px;font-size:0.72rem;font-weight:700;background:rgba(16,185,129,0.15);color:var(--green);margin-left:4px; }
+.tag-f { display:inline-block;padding:1px 8px;border-radius:4px;font-size:0.72rem;font-weight:700;background:rgba(239,68,68,0.15);color:var(--red);margin-left:4px; }
+
+.conn-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; margin: 12px 0; }
+.conn-card { background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.2); border-radius: 10px; padding: 14px; text-align: center; }
+.conn-sym { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--accent2); display: block; }
+.conn-name { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.conn-th { font-size: 0.82rem; font-weight: 600; margin-top: 4px; color: var(--text); }
+
+.formula { font-family: 'Space Grotesk', sans-serif; background: rgba(124,58,237,0.15); padding: 2px 8px; border-radius: 4px; color: var(--accent2); font-size: 0.9em; }
+
+.info-note { background: rgba(245,158,11,0.1); border-left: 3px solid var(--gold); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 0.86rem; margin: 12px 0; color: #fcd34d; }
+
+/* TRUTH TABLE */
+.truth-wrap { overflow-x: auto; margin: 14px 0; }
+table.truth { border-collapse: collapse; width: 100%; font-size: 0.84rem; }
+table.truth th { background: var(--accent); color: white; padding: 8px 10px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; text-align: center; font-size: 0.8rem; white-space: nowrap; }
+table.truth td { padding: 7px 10px; text-align: center; border-bottom: 1px solid var(--border); color: var(--text); }
+table.truth tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+.T { color: var(--green); font-weight: 700; }
+.F { color: var(--red); font-weight: 700; }
+
+.rule-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rule-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; }
+.rule-card .def-label { color: var(--gold); }
+
+.priority-list { display: flex; flex-direction: column; gap: 6px; }
+.pri-row { display: flex; align-items: center; gap: 12px; }
+.pri-sym { font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem; font-weight: 700; color: white; border-radius: 6px; padding: 3px 12px; min-width: 50px; text-align: center; }
+
+/* GAME STYLES */
+.game-wrap { display: flex; flex-direction: column; align-items: center; }
+.game-header-bar { width: 100%; padding: 10px 20px; background: var(--panel); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.stat-chip { font-size: 0.82rem; color: var(--muted); }
+.stat-chip b { color: var(--text); }
+
+.main { display: flex; gap: 20px; padding: 20px; width: 100%; max-width: 1100px; justify-content: center; align-items: flex-start; }
+canvas#board { border: 2px solid var(--border); border-radius: 12px; display: block; background: #0a0a18; width: 100%; max-width: 520px; height: auto; }
+
+.side { display: flex; flex-direction: column; gap: 14px; width: 300px; flex-shrink: 0; }
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+
+.dice-area { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.dice { width: 72px; height: 72px; background: #1e1e3f; border: 2px solid var(--accent); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 2.6rem; cursor: pointer; transition: transform 0.1s, box-shadow 0.2s; user-select: none; }
+.dice:hover { box-shadow: 0 0 24px rgba(124,58,237,0.6); }
+.dice.rolling { animation: droll 0.4s ease; }
+@keyframes droll { 0%,100%{transform:rotate(0)} 25%{transform:rotate(-15deg)} 75%{transform:rotate(15deg)} }
+
+.btn { width: 100%; padding: 10px 16px; border-radius: 8px; border: none; font-family: 'Sarabun', sans-serif; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { background: #6d28d9; }
+.btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+.btn-secondary { background: transparent; color: var(--muted); border: 1px solid var(--border); font-size: 0.8rem; }
+.btn-secondary:hover { color: var(--text); border-color: var(--muted); }
+
+.pos-display { text-align: center; font-size: 0.82rem; color: var(--muted); }
+.pos-display span { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--accent2); display: block; }
+
+.level-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;}
+.level-tab { flex: 1; min-width: 60px; padding: 5px 2px; border-radius: 6px; border: 1px solid var(--border); background: transparent; font-family: 'Sarabun', sans-serif; font-size: 0.72rem; cursor: pointer; color: var(--muted); transition: all 0.2s; }
+.level-tab.ae { background: rgba(16,185,129,0.1); color: var(--easy); border-color: var(--easy); }
+.level-tab.am { background: rgba(245,158,11,0.1); color: var(--medium); border-color: var(--medium); }
+.level-tab.ah { background: rgba(239,68,68,0.1); color: var(--red); border-color: var(--red); }
+.level-tab.ax { background: rgba(6,182,212,0.1); color: var(--accent2); border-color: var(--accent2); }
+
+.log { max-height: 140px; overflow-y: auto; font-size: 0.78rem; color: var(--muted); line-height: 1.9; }
+.log div:last-child { color: var(--text); }
+
+/* MODAL */
+.modal-bg { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.82); z-index: 200; align-items: center; justify-content: center; padding: 16px; }
+.modal-bg.show { display: flex; }
+.modal { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 26px; max-width: 520px; width: 100%; animation: popIn 0.25s ease; max-height: 90vh; overflow-y: auto; }
+@keyframes popIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.be { background: rgba(16,185,129,0.15); color: var(--easy); }
+.bm { background: rgba(245,158,11,0.15); color: var(--medium); }
+.bh { background: rgba(239,68,68,0.15); color: var(--red); }
+.modal-q { font-size: 1rem; line-height: 1.65; margin-bottom: 6px; color: var(--text); }
+.modal-vals { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.val-chip { background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.3); border-radius: 6px; padding: 2px 10px; font-family: 'Space Grotesk', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--accent2); }
+.mchoices { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+.mchoice { background: #1a1a35; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; color: var(--text); font-family: 'Sarabun', sans-serif; font-size: 0.88rem; cursor: pointer; text-align: left; transition: all 0.15s; }
+.mchoice:hover { border-color: var(--accent); background: #22224a; }
+.mchoice.correct { border-color: var(--green); background: rgba(16,185,129,0.1); color: var(--green); }
+.mchoice.wrong { border-color: var(--red); background: rgba(239,68,68,0.1); color: var(--red); }
+.mfeedback { padding: 10px 14px; border-radius: 8px; font-size: 0.85rem; line-height: 1.5; margin-bottom: 12px; display: none; }
+.mfeedback.show { display: block; }
+.mfeedback.ok { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.mfeedback.bad { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+
+/* WIN SCREEN */
+.win-screen { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 300; align-items: center; justify-content: center; flex-direction: column; gap: 14px; text-align: center; padding: 20px; }
+.win-screen.show { display: flex; }
+.win-screen h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2.2rem; color: var(--gold); }
+.win-screen p { color: var(--muted); }
+.trophy { font-size: 4rem; }
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 800px) {
+  .main { flex-direction: column; align-items: center; padding: 10px; }
+  .side { width: 100%; max-width: 520px; }
+  nav { flex-wrap: wrap; justify-content: center; padding: 10px; }
+  .nav-tabs { overflow-x: auto; max-width: 100%; padding-bottom: 5px; }
+  .rule-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">LOGIC<span>QUEST</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('theory',this)">📖 ทฤษฎี</button>
+    <button class="nav-tab" onclick="showTab('table',this)">📊 ตารางประพจน์</button>
+    <button class="nav-tab" onclick="showTab('game',this)">🎮 เกมงู-บันได</button>
+  </div>
+</nav>
+
+<div class="section active" id="theory">
+<div class="content-wrap">
+  <div class="page-title">ประพจน์และตัวเชื่อม</div>
+  <div class="page-subtitle">อนุประโยคและประโยคความซ้อน — พื้นฐานตรรกะศาสตร์</div>
+
+  <div class="tcard hl">
+    <div class="def-box">
+      <div class="def-label">นิยาม</div>
+      <b>ประพจน์ (Proposition)</b> คือประโยคบอกเล่าที่สามารถระบุได้ว่าเป็น <b>จริง (T)</b> หรือ <b>เท็จ (F)</b> อย่างใดอย่างหนึ่งเท่านั้น
+    </div>
+    <div class="ex-row"><div class="ex-num">✓</div><span>"กรุงเทพฯ คือเมืองหลวงของไทย" <span class="tag-t">จริง</span></span></div>
+    <div class="ex-row"><div class="ex-num">✓</div><span>"2 + 2 = 5" <span class="tag-f">เท็จ</span></span></div>
+    <div class="ex-row"><div class="ex-num">✗</div><span>"ปิดประตูด้วย!" — ประโยคคำสั่ง <b>ไม่ใช่ประพจน์</b></span></div>
+    <div class="ex-row"><div class="ex-num">✗</div><span>"คุณชื่ออะไร?" — ประโยคคำถาม <b>ไม่ใช่ประพจน์</b></span></div>
+  </div>
+
+  <h2>ตัวเชื่อมทางตรรกะ (Logical Connectives)</h2>
+  <div class="conn-grid">
+    <div class="conn-card"><span class="conn-sym">¬</span><div class="conn-name">NOT / นิเสธ</div><div class="conn-th">ไม่ (p)</div></div>
+    <div class="conn-card"><span class="conn-sym">∧</span><div class="conn-name">AND / สังยุต</div><div class="conn-th">และ</div></div>
+    <div class="conn-card"><span class="conn-sym">∨</span><div class="conn-name">OR / วิยุต</div><div class="conn-th">หรือ</div></div>
+    <div class="conn-card"><span class="conn-sym">→</span><div class="conn-name">IF-THEN / นัย</div><div class="conn-th">ถ้า...แล้ว</div></div>
+    <div class="conn-card"><span class="conn-sym">↔</span><div class="conn-name">IFF / ทวินัย</div><div class="conn-th">ก็ต่อเมื่อ</div></div>
+  </div>
+
+  <h2>ลำดับความสำคัญของตัวเชื่อม</h2>
+  <div class="tcard">
+    <div class="priority-list">
+      <div class="pri-row"><div class="pri-sym" style="background:#7c3aed">¬</div><span>สูงสุด — ทำก่อนเสมอ</span></div>
+      <div class="pri-row"><div class="pri-sym" style="background:#6d28d9">∧</div><span>รองลงมา</span></div>
+      <div class="pri-row"><div class="pri-sym" style="background:#5b21b6">∨</div><span>กลาง</span></div>
+      <div class="pri-row"><div class="pri-sym" style="background:#4c1d95">→</div><span>ต่ำ</span></div>
+      <div class="pri-row"><div class="pri-sym" style="background:#3b0764">↔</div><span>ต่ำสุด — ทำหลังสุด</span></div>
+    </div>
+    <div class="info-note" style="margin-top:14px">🔑 วงเล็บจะ override ลำดับนี้เสมอ เช่น ¬(p ∧ q) ต้องทำ ∧ ก่อนแล้วค่อยนิเสธ</div>
+  </div>
+
+  <h2>กฎสำคัญ</h2>
+  <div class="tcard">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">
+      <div class="def-box" style="text-align:center">
+        <div class="def-label">De Morgan #1</div>
+        <span class="formula">¬(p ∧ q)</span><br>≡<br><span class="formula">¬p ∨ ¬q</span>
+      </div>
+      <div class="def-box" style="text-align:center">
+        <div class="def-label">De Morgan #2</div>
+        <span class="formula">¬(p ∨ q)</span><br>≡<br><span class="formula">¬p ∧ ¬q</span>
+      </div>
+      <div class="def-box" style="text-align:center">
+        <div class="def-label">Contrapositive</div>
+        <span class="formula">p → q</span><br>≡<br><span class="formula">¬q → ¬p</span>
+      </div>
+      <div class="def-box" style="text-align:center">
+        <div class="def-label">นัยสมมูล</div>
+        <span class="formula">p → q</span><br>≡<br><span class="formula">¬p ∨ q</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section" id="table">
+<div class="content-wrap">
+  <div class="page-title">ตารางค่าความจริง</div>
+  <div class="page-subtitle">ตารางแสดงค่าความจริงของตัวเชื่อมทุกรูปแบบ</div>
+
+  <div class="tcard">
+    <h2 style="margin-top:0">ตัวเชื่อมพื้นฐาน (p และ q)</h2>
+    <div class="truth-wrap">
+      <table class="truth">
+        <thead>
+          <tr><th>p</th><th>q</th><th>¬p</th><th>¬q</th><th>p ∧ q</th><th>p ∨ q</th><th>p → q</th><th>p ↔ q</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="T">T</td><td class="T">T</td><td class="F">F</td><td class="F">F</td><td class="T">T</td><td class="T">T</td><td class="T">T</td><td class="T">T</td></tr>
+          <tr><td class="T">T</td><td class="F">F</td><td class="F">F</td><td class="T">T</td><td class="F">F</td><td class="T">T</td><td class="F">F</td><td class="F">F</td></tr>
+          <tr><td class="F">F</td><td class="T">T</td><td class="T">T</td><td class="F">F</td><td class="F">F</td><td class="T">T</td><td class="T">T</td><td class="F">F</td></tr>
+          <tr><td class="F">F</td><td class="F">F</td><td class="T">T</td><td class="T">T</td><td class="F">F</td><td class="F">F</td><td class="T">T</td><td class="T">T</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tcard">
+    <h2 style="margin-top:0">กฎจำสำคัญ</h2>
+    <div class="rule-grid">
+      <div class="rule-card"><div class="def-label">∧ AND</div>จริงเฉพาะเมื่อ<br><b>ทั้งคู่เป็นจริง</b></div>
+      <div class="rule-card"><div class="def-label">∨ OR</div>เท็จเฉพาะเมื่อ<br><b>ทั้งคู่เป็นเท็จ</b></div>
+      <div class="rule-card"><div class="def-label">→ IF-THEN</div>เท็จเฉพาะเมื่อ<br><b>p = T และ q = F</b></div>
+      <div class="rule-card"><div class="def-label">↔ IFF</div>จริงเมื่อ<br><b>p และ q เหมือนกัน</b></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="section" id="game">
+<div class="game-wrap">
+  <div class="game-header-bar">
+    <span class="stat-chip">✅ ถูก: <b id="sc">0</b></span>
+    <span class="stat-chip">❌ ผิด: <b id="sw">0</b></span>
+    <span class="stat-chip">🎯 ช่อง: <b id="sp">0</b>/100</span>
+  </div>
+
+  <div class="main">
+    <div><canvas id="board" width="520" height="520"></canvas></div>
+
+    <div class="side">
+      <div class="card">
+        <h3>ระดับคำถาม</h3>
+        <div class="level-tabs">
+          <button class="level-tab ae" id="lt-easy"   onclick="setLevel('easy',this)">🟢 ง่าย</button>
+          <button class="level-tab"   id="lt-medium" onclick="setLevel('medium',this)">🟡 กลาง</button>
+          <button class="level-tab"   id="lt-hard"   onclick="setLevel('hard',this)">🔴 ยาก</button>
+          <button class="level-tab"   id="lt-mix"    onclick="setLevel('mix',this)">🎲 สุ่ม</button>
+        </div>
+        <div id="levelDesc" style="font-size:0.76rem;color:var(--muted);line-height:1.5">
+          คำถามเกี่ยวกับการประเมินค่าความจริง-เท็จ และตัวเชื่อมพื้นฐาน
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>ทอยลูกเต๋า</h3>
+        <div class="dice-area">
+          <div class="pos-display">ตำแหน่งปัจจุบัน<span id="posNum">START</span></div>
+          <div class="dice" id="dice" onclick="rollDice()">🎲</div>
+          <div id="diceResult" style="font-size:0.82rem;color:var(--muted)">กดลูกเต๋าเพื่อเริ่ม</div>
+          <button class="btn btn-primary" id="rollBtn" onclick="rollDice()">ทอยลูกเต๋า</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>บันทึกการเล่น</h3>
+        <div class="log" id="logBox"><div>— เริ่มเกมใหม่ —</div></div>
+      </div>
+
+      <button class="btn btn-secondary" onclick="resetGame()">🔄 เริ่มเกมใหม่</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal-bg" id="qModal">
+  <div class="modal">
+    <div id="qBadge" class="modal-badge be">ง่าย</div>
+    <div class="modal-q" id="qText"></div>
+    <div class="modal-vals" id="qVals"></div>
+    <div class="mchoices" id="qChoices"></div>
+    <div class="mfeedback" id="qFeedback"></div>
+    <button class="btn btn-primary" id="qContinue" style="display:none" onclick="continueAfterQ()">ดำเนินการต่อ →</button>
+  </div>
+</div>
+
+<div class="win-screen" id="winScreen">
+  <div class="trophy">🏆</div>
+  <h1>ยอดเยี่ยม!</h1>
+  <p>คุณผ่านกระดานได้สำเร็จ!</p>
+  <p style="color:var(--text)">ถูก <b id="wRight" style="color:var(--green)">0</b> &nbsp;|&nbsp; ผิด <b id="wWrong" style="color:var(--red)">0</b></p>
+  <button class="btn btn-primary" style="width:200px;margin-top:10px" onclick="resetGame()">เล่นอีกครั้ง</button>
+</div>
+
+<script>
+// ==================== AUDIO SYSTEM ====================
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+let audioCtx;
+
+function initAudio() {
+  if (!audioCtx) audioCtx = new AudioContext();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playTone(freq, type, duration, vol=0.1) {
+  initAudio();
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type;
+  osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration);
+}
+
+const sfx = {
+  click: () => playTone(600, 'sine', 0.1, 0.05),
+  roll: () => { playTone(400, 'square', 0.1, 0.05); setTimeout(()=>playTone(500, 'square', 0.1, 0.05), 100); },
+  correct: () => { playTone(800, 'sine', 0.1, 0.1); setTimeout(()=>playTone(1200, 'sine', 0.2, 0.1), 150); },
+  wrong: () => playTone(300, 'sawtooth', 0.3, 0.1),
+  win: () => { playTone(523.25, 'sine', 0.2, 0.1); setTimeout(()=>playTone(659.25, 'sine', 0.2, 0.1), 200); setTimeout(()=>playTone(783.99, 'sine', 0.4, 0.1), 400); }
+};
+
+// ==================== TABS ====================
+function showTab(id, btn) {
+  sfx.click();
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ==================== QUESTIONS (ย่อส่วนจากของเดิม) ====================
+const QUESTIONS = {
+  easy: [
+    { q:'ประพจน์คืออะไร?', vals:null, choices:['ประโยคที่ระบุจริง/เท็จได้','ประโยคคำถาม','ประโยคคำสั่ง','ประโยคอุทาน'], ans:0, explain:'ประพจน์คือประโยคบอกเล่าที่ระบุได้ว่าจริงหรือเท็จ' },
+    { q:'ถ้า p = T แล้ว ¬p มีค่าเป็น?', vals:['p = T'], choices:['T','F','T และ F','ไม่แน่นอน'], ans:1, explain:'¬p คือนิเสธ ถ้า p = T แล้ว ¬p = F' },
+    { q:'p ∧ q มีค่าเป็น T เมื่อใด?', vals:null, choices:['p = T เท่านั้น','q = T เท่านั้น','ทั้ง p และ q = T','p หรือ q อย่างใดอย่างหนึ่ง = T'], ans:2, explain:'∧ (AND) จริงเฉพาะเมื่อทั้งสองฝ่ายเป็นจริง' }
+  ],
+  medium: [
+    { q:'กำหนด p = T, q = F หา p → q', vals:['p = T','q = F'], choices:['T','F','ขึ้นกับ p','ขึ้นกับ q'], ans:1, explain:'p → q เป็น F เฉพาะ p=T, q=F (เหตุจริง ผลเท็จ)' },
+    { q:'¬(p ∧ q) สมมูลกับ?', vals:null, choices:['¬p ∧ ¬q','¬p ∨ ¬q','p ∨ q','¬p → q'], ans:1, explain:'กฎ De Morgan: ¬(p ∧ q) ≡ ¬p ∨ ¬q' },
+    { q:'p ∨ ¬p มีค่าเป็น?', vals:null, choices:['T เสมอ','F เสมอ','ขึ้นกับค่า p','T หรือ F'], ans:0, explain:'p ∨ ¬p เป็น Tautology — จริงเสมอ' }
+  ],
+  hard: [
+    { q:'กำหนด p=T, q=F, r=T หา (p ∧ q) → r', vals:['p=T','q=F','r=T'], choices:['T','F','ไม่แน่นอน','ขึ้นกับ r'], ans:0, explain:'p∧q=F, F→T=T (เหตุเท็จ นัยจริงเสมอ)' },
+    { q:'Contrapositive ของ p → q คือ?', vals:null, choices:['q → p','¬p → ¬q','¬q → ¬p','¬p → q'], ans:2, explain:'Contrapositive คือ ¬q → ¬p ซึ่งสมมูลกับ p→q' }
+  ]
+};
+
+// ==================== SNAKE & LADDER ====================
+const SPECIALS = { 4:14, 9:31, 20:38, 28:84, 40:59, 51:67, 63:81, 71:91, 17:7, 54:34, 62:19, 64:60, 87:24, 93:73, 95:75, 99:78 };
+
+let pos=0, score=0, wrong=0, rolling=false, pendingMove=0, currentQ=null;
+let currentLevel='easy';
+let usedQ={easy:[],medium:[],hard:[]};
+
+const canvas=document.getElementById('board');
+const ctx=canvas.getContext('2d');
+const COLS=10, ROWS=10, CELL=canvas.width/COLS;
+
+function cellToXY(n) {
+  const idx=n-1, row=Math.floor(idx/COLS);
+  const col=(row%2===0)?(idx%COLS):(COLS-1-idx%COLS);
+  return {x:col*CELL+CELL/2, y:(ROWS-1-row)*CELL+CELL/2};
+}
+
+function drawBoard() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  for(let n=1;n<=100;n++){
+    const {x,y}=cellToXY(n);
+    const cx=x-CELL/2, cy=y-CELL/2;
+    let bg='#0f0f28';
+    if(SPECIALS[n]!==undefined) bg=SPECIALS[n]>n?'rgba(16,185,129,0.15)':'rgba(239,68,68,0.15)';
+    if(n===pos) bg='rgba(124,58,237,0.35)';
+    ctx.fillStyle=bg; ctx.fillRect(cx+1,cy+1,CELL-2,CELL-2);
+    ctx.strokeStyle='#1e1e3f'; ctx.lineWidth=1; ctx.strokeRect(cx+1,cy+1,CELL-2,CELL-2);
+    ctx.fillStyle=n===pos?'#c4b5fd':'#2d2d6e';
+    ctx.font=`${CELL*0.22}px Space Grotesk`;
+    ctx.textAlign='center'; ctx.textBaseline='top'; ctx.fillText(n,x,cy+3);
+  }
+  for(const [from,to] of Object.entries(SPECIALS)){
+    const f=parseInt(from),t=parseInt(to);
+    const p1=cellToXY(f),p2=cellToXY(t);
+    const isL=t>f;
+    ctx.strokeStyle=isL?'#10b981':'#ef4444';
+    ctx.lineWidth=2.5; ctx.setLineDash(isL?[]:[5,3]); ctx.globalAlpha=0.7;
+    ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y); ctx.stroke();
+    ctx.setLineDash([]); ctx.globalAlpha=1;
+    const angle=Math.atan2(p2.y-p1.y,p2.x-p1.x);
+    ctx.fillStyle=isL?'#10b981':'#ef4444';
+    ctx.save(); ctx.translate(p2.x,p2.y); ctx.rotate(angle);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(-10,-5); ctx.lineTo(-10,5);
+    ctx.closePath(); ctx.fill(); ctx.restore();
+  }
+  if(pos>0){
+    const {x,y}=cellToXY(pos);
+    ctx.beginPath(); ctx.arc(x,y+4,CELL*0.28,0,Math.PI*2);
+    ctx.fillStyle='#7c3aed'; ctx.fill();
+    ctx.strokeStyle='#c4b5fd'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='white'; ctx.font=`bold ${CELL*0.28}px Sarabun`;
+    ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('★',x,y+4);
+  }
+}
+
+const FACES=['⚀','⚁','⚂','⚃','⚄','⚅'];
+
+function rollDice(){
+  if(rolling||document.getElementById('qModal').classList.contains('show')) return;
+  rolling=true; sfx.roll();
+  document.getElementById('rollBtn').disabled=true;
+  const dice=document.getElementById('dice');
+  dice.classList.add('rolling');
+  let count=0;
+  const iv=setInterval(()=>{
+    dice.textContent=FACES[Math.floor(Math.random()*6)];
+    if(++count>=8){
+      clearInterval(iv);
+      dice.classList.remove('rolling');
+      const r=Math.floor(Math.random()*6)+1;
+      dice.textContent=FACES[r-1];
+      document.getElementById('diceResult').textContent=`ได้ ${r} แต้ม`;
+      movePlayer(r);
+    }
+  },60);
+}
+
+function movePlayer(steps){
+  let np=pos+steps;
+  if(np>100) np=100-(np-100);
+  addLog(`🎲 ทอยได้ ${steps} → ช่องที่ ${np}`);
+  animateMove(pos,np,()=>{
+    pos=np; drawBoard(); updateStats();
+    if(pos===100){setTimeout(showWin,400);rolling=false;return;}
+    pendingMove=np;
+    showQuestion(np);
+  });
+}
+
+function animateMove(from,to,cb){
+  if(from===to){cb();return;}
+  let cur=from; const step=from<to?1:-1;
+  const go=()=>{ cur+=step; pos=Math.max(0,cur); drawBoard(); if(cur!==to) setTimeout(go,90); else cb(); };
+  setTimeout(go,90);
+}
+
+function getQuestion(level){
+  let lv=level;
+  if(lv==='mix'){const arr=['easy','medium','hard'];lv=arr[Math.floor(Math.random()*3)];}
+  const pool=QUESTIONS[lv];
+  let avail=pool.filter((_,i)=>!usedQ[lv].includes(i));
+  if(!avail.length){usedQ[lv]=[];avail=pool;}
+  const idx=Math.floor(Math.random()*avail.length);
+  const ri=pool.indexOf(avail[idx]);
+  usedQ[lv].push(ri);
+  return {q:pool[ri],level:lv};
+}
+
+function showQuestion(cellNum){
+  const {q,level}=getQuestion(currentLevel);
+  currentQ={q,level,answered:false,correct:false};
+  const badge=document.getElementById('qBadge');
+  badge.textContent=level==='easy'?'ง่าย':level==='medium'?'กลาง':'ยาก';
+  badge.className='modal-badge '+(level==='easy'?'be':level==='medium'?'bm':'bh');
+  document.getElementById('qText').textContent=`ช่องที่ ${cellNum}: ${q.q}`;
+  const valsDiv=document.getElementById('qVals'); valsDiv.innerHTML='';
+  if(q.vals) q.vals.forEach(v=>{ const c=document.createElement('div');c.className='val-chip';c.textContent=v;valsDiv.appendChild(c); });
+  const ch=document.getElementById('qChoices'); ch.innerHTML='';
+  q.choices.forEach((c,i)=>{
+    const btn=document.createElement('button'); btn.className='mchoice';
+    btn.textContent=`${['A','B','C','D'][i]}. ${c}`; btn.onclick=()=>answerQ(i,btn); ch.appendChild(btn);
+  });
+  document.getElementById('qFeedback').className='mfeedback';
+  document.getElementById('qContinue').style.display='none';
+  document.getElementById('qModal').classList.add('show');
+}
+
+function answerQ(chosen,btn){
+  if(currentQ.answered) return;
+  currentQ.answered=true;
+  const q=currentQ.q, ok=chosen===q.ans;
+  currentQ.correct=ok;
+  if(ok) { score++; sfx.correct(); } else { wrong++; sfx.wrong(); }
+  document.querySelectorAll('.mchoice').forEach((b,i)=>{
+    b.onclick=null;
+    if(i===q.ans) b.classList.add('correct'); else if(b===btn&&!ok) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('qFeedback');
+  fb.className='mfeedback show '+(ok?'ok':'bad');
+  fb.textContent=(ok?'✅ ถูกต้อง! ':'❌ ผิด! ')+q.explain;
+  addLog((ok?'✅':'❌')+' '+(ok?'ตอบถูก':'ตอบผิด')+` — ช่อง ${pendingMove}`);
+  updateStats(); document.getElementById('qContinue').style.display='block';
+}
+
+function continueAfterQ(){
+  sfx.click();
+  document.getElementById('qModal').classList.remove('show');
+  const dest=SPECIALS[pendingMove];
+  if(dest!==undefined){
+    const isL=dest>pendingMove;
+    if(currentQ.correct||isL){
+      setTimeout(()=>{
+        addLog(isL?`🪜 บันได! ขึ้นช่อง ${dest}`:`🐍 งู! ลงช่อง ${dest}`);
+        animateMove(pos,dest,()=>{
+          pos=dest;drawBoard();updateStats(); rolling=false;document.getElementById('rollBtn').disabled=false;
+          if(pos===100) showWin();
+        });
+      },300);
+    } else {
+      addLog(`🛡️ ตอบผิด แต่รอดจากงู! ช่อง ${pos}`); rolling=false;document.getElementById('rollBtn').disabled=false;
+    }
+  } else {
+    rolling=false;document.getElementById('rollBtn').disabled=false;
+  }
+}
+
+function setLevel(level,btn){
+  sfx.click(); currentLevel=level;
+  document.querySelectorAll('.level-tab').forEach(b=>{b.className='level-tab';});
+  const cls={easy:'ae',medium:'am',hard:'ah',mix:'ax'}; btn.className='level-tab '+cls[level];
+  const desc={ easy:'คำถามเกี่ยวกับค่าความจริงและตัวเชื่อม', medium:'คำถามเกี่ยวกับนัย ↔ กฎ De Morgan', hard:'คำถามเกี่ยวกับ Contrapositive', mix:'สุ่มคำถามทุกระดับ' };
+  document.getElementById('levelDesc').textContent=desc[level];
+}
+
+function updateStats(){
+  document.getElementById('sc').textContent=score; document.getElementById('sw').textContent=wrong;
+  document.getElementById('sp').textContent=pos; document.getElementById('posNum').textContent=pos===0?'START':pos;
+}
+
+function addLog(msg){
+  const log=document.getElementById('logBox');
+  const d=document.createElement('div');d.textContent=msg; log.appendChild(d);log.scrollTop=log.scrollHeight;
+}
+
+function showWin(){
+  sfx.win(); document.getElementById('wRight').textContent=score; document.getElementById('wWrong').textContent=wrong;
+  document.getElementById('winScreen').classList.add('show');
+}
+
+function resetGame(){
+  sfx.click(); pos=0;score=0;wrong=0;rolling=false; usedQ={easy:[],medium:[],hard:[]};
+  document.getElementById('winScreen').classList.remove('show'); document.getElementById('qModal').classList.remove('show');
+  document.getElementById('rollBtn').disabled=false; document.getElementById('dice').textContent='🎲';
+  document.getElementById('diceResult').textContent='กดลูกเต๋าเพื่อเริ่ม'; document.getElementById('logBox').innerHTML='<div>— เริ่มเกมใหม่ —</div>';
+  updateStats();drawBoard();
+}
+
+drawBoard();updateStats();
+</script>
+</body>
+</html>
